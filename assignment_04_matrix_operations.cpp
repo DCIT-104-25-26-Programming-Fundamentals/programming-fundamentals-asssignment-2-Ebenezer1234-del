@@ -65,3 +65,101 @@
 #include <string>
 using namespace std;
 
+const int MAX_SIZE = 10;
+
+void readMatrix(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << "Enter element [" << i << "][" << j << "]: ";
+            cin >> matrix[i][j];
+        }
+    }
+}
+
+void displayMatrix(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << setw(5) << matrix[i][j];
+        }
+        cout << endl;
+    }
+}
+
+void transposeMatrix(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols) {
+    int transposed[MAX_SIZE][MAX_SIZE];
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            transposed[j][i] = matrix[i][j];
+        }
+    }
+
+    cout << "\nTranspose Result:\n";
+    displayMatrix(transposed, cols, rows);
+}
+
+void addMatrices(int matrixA[MAX_SIZE][MAX_SIZE], int matrixB[MAX_SIZE][MAX_SIZE], int rows, int cols) {
+    int result[MAX_SIZE][MAX_SIZE];
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[i][j] = matrixA[i][j] + matrixB[i][j];
+        }
+    }
+
+    cout << "\nMatrix Addition Result:\n";
+    displayMatrix(result, rows, cols);
+}
+
+void multiplyMatrices(int matrixA[MAX_SIZE][MAX_SIZE], int matrixB[MAX_SIZE][MAX_SIZE], int rowsA, int colsA, int colsB) {
+    int result[MAX_SIZE][MAX_SIZE] = {0};
+
+    for (int i = 0; i < rowsA; i++) {
+        for (int j = 0; j < colsB; j++) {
+            for (int k = 0; k < colsA; k++) {
+                result[i][j] += matrixA[i][k] * matrixB[k][j];
+            }
+        }
+    }
+
+    cout << "\nMatrix Multiplication Result:\n";
+    displayMatrix(result, rowsA, colsB);
+}
+
+int main() {
+    int rows, cols, rowsB, colsB;
+    int matrixA[MAX_SIZE][MAX_SIZE], matrixB[MAX_SIZE][MAX_SIZE];
+
+    cout << "Enter number of rows: ";
+    cin >> rows;
+    cout << "Enter number of columns: ";
+    cin >> cols;
+
+    cout << "\nEnter matrix A elements:\n";
+    readMatrix(matrixA, rows, cols);
+
+    transposeMatrix(matrixA, rows, cols);
+
+    cout << "\nEnter number of rows for matrix B: ";
+    cin >> rowsB;
+    cout << "Enter number of columns for matrix B: ";
+    cin >> colsB;
+
+    cout << "\nEnter matrix B elements:\n";
+    readMatrix(matrixB, rowsB, colsB);
+
+    if (rows == rowsB && cols == colsB) {
+        addMatrices(matrixA, matrixB, rows, cols);
+    } else {
+        cout << "\nMatrix addition not possible: sizes must match." << endl;
+    }
+
+    if (cols == rowsB) {
+        multiplyMatrices(matrixA, matrixB, rows, cols, colsB);
+    } else {
+        cout << "\nMatrix multiplication not possible: columns of A must equal rows of B." << endl;
+    }
+
+    return 0;
+}
+
